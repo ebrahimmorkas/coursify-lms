@@ -187,7 +187,7 @@ export default async function CoursePage(props: PageProps<"/courses/[slug]">) {
             />
             <div className="space-y-5 p-6">
               <p className="text-3xl font-bold text-slate-900">{formatPrice(course.priceCents)}</p>
-              <EnrollCard slug={course.slug} />
+              <EnrollCard course={course} />
               <ul className="space-y-2 text-sm text-slate-600">
                 {[
                   `${course.lessonCount} lessons (${formatDuration(course.totalMinutes)})`,
