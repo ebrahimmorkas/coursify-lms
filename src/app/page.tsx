@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { BarChart3, BookOpenCheck, CreditCard, PlayCircle } from "lucide-react";
+import { CourseCard } from "@/components/courses/course-card";
 import { buttonVariants } from "@/components/ui/button";
+import { getFeaturedCourses } from "@/lib/queries/courses";
 
 const highlights = [
   {
@@ -25,7 +27,9 @@ const highlights = [
   },
 ];
 
-export default function HomePage() {
+export default async function HomePage() {
+  const featured = await getFeaturedCourses(3);
+
   return (
     <>
       <section className="relative overflow-hidden bg-white">
@@ -65,6 +69,28 @@ export default function HomePage() {
           ))}
         </div>
       </section>
+      {featured.length > 0 && (
+        <section className="border-t border-slate-200 bg-white">
+          <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6">
+            <div className="flex items-end justify-between gap-4">
+              <div>
+                <h2 className="text-2xl font-bold text-slate-900">Most popular courses</h2>
+                <p className="mt-1 text-slate-600">
+                  Join thousands of learners in these top picks.
+                </p>
+              </div>
+              <Link href="/courses" className={buttonVariants({ variant: "outline" })}>
+                View all
+              </Link>
+            </div>
+            <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {featured.map((course) => (
+                <CourseCard key={course.id} course={course} />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
     </>
   );
 }
