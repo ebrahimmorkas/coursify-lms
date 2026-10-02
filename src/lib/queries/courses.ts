@@ -8,24 +8,32 @@ import type { CatalogFilters } from "@/lib/validations/catalog";
 export const CATALOG_PAGE_SIZE = 9;
 export const CATALOG_CACHE_NAMESPACE = "catalog";
 
-/** Aggregates computed with correlated subqueries; each one is backed by an index on course_id. */
+/**
+ * Aggregates computed with correlated subqueries; each one is backed by an index on course_id.
+ * The outer column is written as "courses"."id" on purpose: in single-table selects Drizzle
+ * renders column references unqualified, which would bind to the subquery's own "id".
+ */
 const courseStats = {
   lessonCount:
-    sql<number>`(select count(*) from lessons l where l.course_id = ${courses.id})`.mapWith(Number),
+    sql<number>`(select count(*) from lessons l where l.course_id = "courses"."id")`.mapWith(
+      Number,
+    ),
   totalMinutes:
-    sql<number>`(select coalesce(sum(l.duration_minutes), 0) from lessons l where l.course_id = ${courses.id})`.mapWith(
+    sql<number>`(select coalesce(sum(l.duration_minutes), 0) from lessons l where l.course_id = "courses"."id")`.mapWith(
       Number,
     ),
   studentCount:
-    sql<number>`(select count(*) from enrollments e where e.course_id = ${courses.id})`.mapWith(
+    sql<number>`(select count(*) from enrollments e where e.course_id = "courses"."id")`.mapWith(
       Number,
     ),
   avgRating:
-    sql<number>`(select coalesce(round(avg(r.rating)::numeric, 1), 0) from reviews r where r.course_id = ${courses.id})`.mapWith(
+    sql<number>`(select coalesce(round(avg(r.rating)::numeric, 1), 0) from reviews r where r.course_id = "courses"."id")`.mapWith(
       Number,
     ),
   reviewCount:
-    sql<number>`(select count(*) from reviews r where r.course_id = ${courses.id})`.mapWith(Number),
+    sql<number>`(select count(*) from reviews r where r.course_id = "courses"."id")`.mapWith(
+      Number,
+    ),
 };
 
 const cardFields = {
