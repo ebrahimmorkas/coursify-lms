@@ -14,19 +14,19 @@ export async function getInstructorCourses(instructorId: string) {
       priceCents: courses.priceCents,
       updatedAt: courses.updatedAt,
       lessonCount:
-        sql<number>`(select count(*) from lessons l where l.course_id = ${courses.id})`.mapWith(
+        sql<number>`(select count(*) from lessons l where l.course_id = "courses"."id")`.mapWith(
           Number,
         ),
       studentCount:
-        sql<number>`(select count(*) from enrollments e where e.course_id = ${courses.id})`.mapWith(
+        sql<number>`(select count(*) from enrollments e where e.course_id = "courses"."id")`.mapWith(
           Number,
         ),
       revenueCents:
-        sql<number>`(select coalesce(sum(e.price_paid_cents), 0) from enrollments e where e.course_id = ${courses.id})`.mapWith(
+        sql<number>`(select coalesce(sum(e.price_paid_cents), 0) from enrollments e where e.course_id = "courses"."id")`.mapWith(
           Number,
         ),
       avgRating:
-        sql<number>`(select coalesce(round(avg(r.rating)::numeric, 1), 0) from reviews r where r.course_id = ${courses.id})`.mapWith(
+        sql<number>`(select coalesce(round(avg(r.rating)::numeric, 1), 0) from reviews r where r.course_id = "courses"."id")`.mapWith(
           Number,
         ),
     })
