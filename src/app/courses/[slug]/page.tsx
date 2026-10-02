@@ -10,6 +10,7 @@ import { env } from "@/lib/env";
 import { getCourseBySlug, type CourseDetail } from "@/lib/queries/courses";
 import { formatDuration, formatPrice } from "@/lib/utils";
 import { EnrollCard } from "./enroll-card";
+import { ReviewsSection } from "./reviews-section";
 
 async function loadCourse(slug: string) {
   const course = await getCourseBySlug(slug);
@@ -157,6 +158,8 @@ export default async function CoursePage(props: PageProps<"/courses/[slug]">) {
               ))}
             </div>
           </section>
+
+          <ReviewsSection course={course} />
 
           <section>
             <h2 className="text-xl font-bold text-slate-900">Your instructor</h2>
