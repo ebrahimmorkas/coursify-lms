@@ -91,7 +91,7 @@ export async function register(_prev: FormState, formData: FormData): Promise<Fo
   }
 
   await createSession(user.id);
-  redirect("/dashboard");
+  redirect(role === "instructor" ? "/studio" : "/dashboard");
 }
 
 export async function logout() {
