@@ -15,6 +15,9 @@ export default async function StudioLayout({ children }: LayoutProps<"/studio">)
             <Link href="/studio" className="hover:text-slate-900">
               Courses
             </Link>
+            <Link href="/studio/analytics" className="hover:text-slate-900">
+              Analytics
+            </Link>
           </nav>
         </div>
       </div>
