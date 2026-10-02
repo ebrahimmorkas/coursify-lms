@@ -1,7 +1,9 @@
 {
   "name": "coursify-lms",
-  "version": "0.1.0",
+  "version": "1.0.0",
+  "description": "Full-stack online learning platform built with Next.js, PostgreSQL, Drizzle ORM, Stripe and optional Redis.",
   "private": true,
+  "license": "MIT",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
