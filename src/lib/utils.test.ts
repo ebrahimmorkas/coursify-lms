@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { formatDuration, formatPrice, percentage, slugify } from "./utils";
+import { formatCurrency, formatDuration, formatPrice, percentage, slugify } from "./utils";
 
 describe("formatPrice", () => {
   it("renders zero as Free", () => {
@@ -8,6 +8,13 @@ describe("formatPrice", () => {
 
   it("formats cents as dollars", () => {
     expect(formatPrice(4999)).toBe("$49.99");
+  });
+});
+
+describe("formatCurrency", () => {
+  it("renders zero as an amount", () => {
+    expect(formatCurrency(0)).toBe("$0.00");
+    expect(formatCurrency(123456)).toBe("$1,234.56");
   });
 });
 

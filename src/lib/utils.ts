@@ -11,6 +11,11 @@ export function formatPrice(cents: number, currency = "USD") {
   return new Intl.NumberFormat("en-US", { style: "currency", currency }).format(cents / 100);
 }
 
+/** Formats cents as currency, always numeric (use for revenue, unlike `formatPrice`). */
+export function formatCurrency(cents: number, currency = "USD") {
+  return new Intl.NumberFormat("en-US", { style: "currency", currency }).format(cents / 100);
+}
+
 export function slugify(input: string) {
   return input
     .toLowerCase()
