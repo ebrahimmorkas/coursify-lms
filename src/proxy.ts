@@ -2,12 +2,16 @@ import { NextResponse, type NextRequest } from "next/server";
 import { SESSION_COOKIE } from "@/lib/auth/tokens";
 
 const PROTECTED_PREFIXES = ["/dashboard", "/studio", "/learn", "/checkout"];
-const AUTH_PAGES = ["/login", "/register"];
 
 /**
  * Optimistic route protection based on the presence of a session cookie.
  * This keeps redirects fast; pages and server actions still validate the
  * session against the database before returning any private data.
+ *
+ * Note: signed-in users are NOT redirected away from /login here. A cookie can be
+ * stale (expired or revoked session), and redirecting on its presence alone would
+ * bounce between /login and protected pages forever. The auth pages check the
+ * session against the database instead.
  */
 export function proxy(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
@@ -17,10 +21,6 @@ export function proxy(request: NextRequest) {
     const loginUrl = new URL("/login", request.url);
     loginUrl.searchParams.set("next", pathname + search);
     return NextResponse.redirect(loginUrl);
-  }
-
-  if (hasSession && AUTH_PAGES.includes(pathname)) {
-    return NextResponse.redirect(new URL("/dashboard", request.url));
   }
 
   return NextResponse.next();
